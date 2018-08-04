@@ -41,7 +41,11 @@ function draw() {
   stroke(200,100,50);
   textAlign(CENTER);
   textSize(30);
-  text("Press [Space] to blob", width/2, height-50);
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    text("Tap to blob", width/2, height-50);
+  }else{
+   text("Press [Space] to blob", width/2, height-50);
+ }
 }
 
 function keyPressed() {
@@ -73,4 +77,8 @@ function randomize(){
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   print(windowWidth);
+}
+
+function mousePressed() {
+  randomize();
 }
