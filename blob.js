@@ -13,7 +13,7 @@ function setup() {
 
 function draw() {
   clear();
-  image(bg,0,0,constrain(windowWidth,600,1400),windowHeight);
+  image(bg,0,0,windowWidth,windowHeight);
   fill(blobFill);
   stroke(blobStroke);
   strokeWeight(5);
