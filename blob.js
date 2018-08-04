@@ -79,6 +79,6 @@ function windowResized() {
   print(windowWidth);
 }
 
-function mousePressed() {
+function mouseClicked() {
   randomize();
 }
