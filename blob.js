@@ -37,6 +37,11 @@ function draw() {
   translate(-(eyeDist*2), 0);
   ellipse(0, 0, eyeRadi, eyeRadi);
   resetMatrix();
+  fill(200,100,100);
+  stroke(200,100,50);
+  textAlign(CENTER);
+  textSize(30);
+  text("Press [Space] to blob", width/2, height-50);
 }
 
 function keyPressed() {
@@ -68,5 +73,4 @@ function randomize(){
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   print(windowWidth);
-  drawBlob = true;
 }
