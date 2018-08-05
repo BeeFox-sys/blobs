@@ -4,9 +4,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
   bg = loadImage("meadow.jpg");
-  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-     console.log("Mobile");
-   }
    grav = createVector(0,.5);
    blob = new Blob(width/2,height/2);
 }
@@ -18,7 +15,7 @@ function draw() {
   textAlign(CENTER);
   textSize(30);
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    text("Double Tap to blob", width/2, 50);
+    text("Shake to blob", width/2, 50);
   }else{
    text("Double Click to blob", width/2, 50);
 }
@@ -53,5 +50,8 @@ function windowResized() {
 }
 
 function doubleClicked(){
+  blob = new Blob();
+}
+function deviceShaken() {
   blob = new Blob();
 }
