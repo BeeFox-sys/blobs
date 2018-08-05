@@ -5,7 +5,7 @@ function setup() {
   colorMode(HSB);
   bg = loadImage("meadow.jpg");
    grav = createVector(0,.5);
-   blob = new Blob(width/2,height/2);
+   blob = new Blob();
 }
 
 function draw() {
