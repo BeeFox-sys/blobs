@@ -1,84 +1,77 @@
-var bg,radi,blobness,hue,sat,bri,eyeHeight,eyeDist,eyeRadi,eyeBlob,blobFill,blobStroke,eyeColour,rand,eyeUp;
+class Blob{
 
-//aprox. total of 4.9338246447e+23 diffrent blobs
-//               (493,382,464,470,000,000,000,000)
-//               (493 sextillion blobs)
-
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  colorMode(HSB);
-  randomize();
-  bg = loadImage("meadow.jpg");
+constructor(xpos, ypos, r, m, b,ch,cs,cb,eh,ed,er,ec){
+  this.radi =  r || random(50, 195);
+  this.blobness = b || random(2, 2.8);
+  this.hue = ch || random(40, 270);
+  this.sat = cs || random(50, 100);
+  this.bri = cb || random(50, 100);
+  this.blobFill = color(this.hue, this.sat, this.bri);
+  this.blobStroke = color(this.hue, this.sat, (this.bri-25));
+  this.eyeHeight = eh || constrain(random(-this.radi),-this.radi+50,0);
+  this.eyeDist = ed || random(50, this.radi+this.eyeHeight);
+  this.eyeRadi = er || random(10,this.radi/10);
+  this.eyeColour = ec || color(random(360),random(100),random(50,100));
+  this.pos =  createVector(0,0);
+  if(xpos != null && ypos != null){
+    this.pos.set(xpos,ypos);
+  }else{
+    this.pos.set(random(this.radi,width-this.radi),random(this.radi, height-pow(log(this.radi),this.blobness)));
+  }
+  this.acc = createVector(0,0);
+  this.vel = createVector(0,0);
+  this.vel.limit(10);
+  this.mood = m || random(0.2,2);
 }
 
-function draw() {
-  clear();
-  image(bg,0,0,windowWidth,windowHeight);
-  fill(blobFill);
-  stroke(blobStroke);
+drawBlob(){
+  fill(this.blobFill);
+  stroke(this.blobStroke);
   strokeWeight(5);
   applyMatrix();
-  translate(width/2, height/10*7);
+  translate(this.pos.x, this.pos.y);
   beginShape();
   for (var i = 0; i <= TWO_PI; i+=0.1) {;
-    var x = radi*cos(i);
-    var y = radi*sin(i);
+    var x = this.radi*cos(i);
+    var y = this.radi*sin(i);
     if (y > 0) {
-      y = pow(log(y), blobness);
+      y = pow(log(y), this.blobness);
     }
     vertex(x, y);
   }
-  vertex(radi*cos(0), radi*sin(0));
+  vertex(this.radi*cos(0), this.radi*sin(0));
   endShape();
-  fill(eyeColour);
-  //translate(eyeOffset,0);
-  translate(eyeDist, eyeHeight);
-  ellipse(0, 0, eyeRadi, eyeRadi);
-  translate(-(eyeDist*2), 0);
-  ellipse(0, 0, eyeRadi, eyeRadi);
+  fill(this.eyeColour);
+  translate(this.eyeDist, this.eyeHeight);
+  ellipse(0, 0, this.eyeRadi, this.eyeRadi);
+  translate(-(this.eyeDist*2), 0);
+  ellipse(0, 0, this.eyeRadi, this.eyeRadi);
   resetMatrix();
-  fill(200,100,100);
-  stroke(200,100,50);
-  textAlign(CENTER);
-  textSize(30);
-  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    text("Tap to blob", width/2, height-50);
-  }else{
-   text("Press [Space] to blob", width/2, height-50);
- }
 }
 
-function keyPressed() {
-  switch(key) {
-  case ' ':
-    if (rand == true) {
-      randomize();
-    }
-  default:
-    break;
+applyVector(x,y){
+  this.acc.add(x,y);
+}
+
+update(){
+  this.vel.add(this.acc);
+  this.acc.set(0,0);
+  if(this.pos.y>=height-100 && this.vel.y > 0){
+    this.vel.set(0,0);
   }
+  if(this.pos.x >= width-this.radi && this.vel.x > 0){
+    this.vel.set(-this.vel.x, this.vel.y);
+  } else if(this.pos.x <= this.radi && this.vel.x < 0){
+    this.vel.set(-this.vel.x, this.vel.y);
+  }
+  if(random(100)<this.mood&&this.pos.y>=height-100){
+    this.applyVector(random(-5,5),random(-10,-3));
+  }
+  this.pos.add(this.vel);
 }
 
-function randomize(){
-    radi = random(50, 195);
-    blobness = random(2, 2.8);
-    hue = random(40, 270);
-    sat = random(50, 100);
-    bri = random(50, 100);
-    blobFill = color(hue, sat, bri);
-    blobStroke =color(hue, sat, (bri-25));
-    eyeHeight = constrain(random(-radi),-radi+50,0);
-    eyeDist = random(50, radi+eyeHeight);
-    eyeRadi = random(10,radi/10);
-    eyeColour = color(random(360),random(100),random(50,100));
-    rand = true;
-}
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  print(windowWidth);
-}
 
-function mouseClicked() {
-  randomize();
+
+
 }
